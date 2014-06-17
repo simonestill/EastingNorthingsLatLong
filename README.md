@@ -1,4 +1,8 @@
-EastingNorthingsLatLong
-=======================
+## EastingNorthingsLatLong
 
-Javascript Libraty for Dealing with UK Eastings and Northings
+
+Javascript Library for converting between eastings and northings
+
+##License
+
+MIT
