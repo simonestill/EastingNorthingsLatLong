@@ -1,10 +1,15 @@
+//Description isn't 100% accurate
+//The densley populated regions midlands South East and M62 land, central scotland are
+//Are under described
+
+
 var OSGridSquares
 = 
 	{
 	"HP":{
 		"Description":"Yell Shetland",
 		"Easting":4,
-	    "Northing":12,
+		"Northing":12,
 		"EastingMetres":400000,
 		"NorthingMetres":1200000
 		},
@@ -59,7 +64,7 @@ var OSGridSquares
 		"Northing":9,
 		"EastingMetres":0,
 		"NorthingMetres":900000,
-		"Description":"St Kilda"	
+		"Description":"North St Kilda"	
 		},
 	"NB":{	
 		"Easting":1,
@@ -204,7 +209,7 @@ var OSGridSquares
 		"Northing":5,
 		"EastingMetres":300000,
 		"NorthingMetres":500000,
-		"Description":"North Cumbria,Cumberland,North Westmoreland,West Northumberland, West Durham"
+		"Description":"North Cumbria,(Cumberland,North Westmoreland),West Northumberland, West Durham"
 	},
 	"NZ":
 	{	
@@ -236,7 +241,7 @@ var OSGridSquares
 		"Northing":4,
 		"EastingMetres":300000,
 		"NorthingMetres":400000,
-		"Description":"Historic Lancashire, South Westmoreland, South Cumbria"
+		"Description":"Historic Lancashire, South Westmoreland, South Cumbria,Pennine Yorkshire"
 	},
 	"SE":
 	{	
@@ -260,7 +265,7 @@ var OSGridSquares
 		"Northing":3,
 		"EastingMetres":300000,
 		"NorthingMetres":300000,
-		"Description":"North East Wales,Cheshire,North Shrophshire, Warrington,Staffordshire, West Derbyshire"
+		"Description":"North East Wales,Cheshire,North Shrophshire, Warrington,Staffordshire, West Derbyshire, South Greater Manchester"
 	},
 	"SK":
 	{	
@@ -323,7 +328,7 @@ var OSGridSquares
 		"Northing":1,
 		"EastingMetres":300000,
 		"NorthingMetres":100000,
-		"Description":"Cardiff, Newport,Wiltshire, Bristol, Somerset"
+		"Description":"Cardiff, Newport,Wiltshire, Bristol,Bath,Somerset"
 	},
 	"SU":{	
 		"Easting":4,
@@ -392,7 +397,7 @@ var OSGridSquares
 	"TL":{	
 		"Easting":5,
 		"Northing":2,
-		"EastingMetres"::500000,
+		"EastingMetres":500000,
 		"NorthingMetres":200000,
 		"Description":"Bedfordshire, West Suffolk, Essex, Hertfordhire"
 	},
@@ -422,36 +427,53 @@ var OSGridSquares
 		"Northing":0,
 		"EastingMetres":500000,
 		"NorthingMetres":0,
-		"Description":"Beachy Head"
+		"Description":"Beachey Head"
 	}
 }
 
 
 function GridRefToEastingNorthing(gridref)
 {
-	precision = gridref.length() -2;
-	gridsquare = gridref.substring(0,2);
-	easting = OSGridSquares[gridsquare].easting + gridref(2,precision/2);
-	northing = OSGridSquares[gridsquare].easting + gridref.substring(precision/2 + 2);
+	precision = (gridref.length -2)/2;
+	gridsquare = gridref.substring(0,2).toUpperCase();	
+	easting = OSGridSquares[gridsquare].Easting + gridref.substring(2,2 + precision) + Array(6-precision).join("0") ;
+	northing = OSGridSquares[gridsquare].Northing + gridref.substring(precision + 2) + Array(6-precision).join("0");
+	
 	return [easting,northing]
 }
 
 function EastingNorthingToGridRef(easting,northing)
 {
+	var Easting = null;
+	var Northing = null;		
+	var GridSquare = null;
+	var GridRef = "";	
     for(var key in OSGridSquares)
-	{
-		var Easting = null;
-		var Northing = null;		
-		var GridSquare = null;
-		var GridRef = "";
-		
-		if(key.Easting  == easting &&
-        	key.Northing == northing)
+	{		
+		//alert(key);
+		if(OSGridSquares[key].Easting.toString()  == easting.substring(0,1) &&
+        	OSGridSquares[key].Northing.toString() == northing.substring(0,1))
 		{
-		   var Easting = key.easting;
-		   var Northing = key.northing
-		   var GridSquare = key
+		   Easting = OSGridSquares[key].Easting;
+		   Northing = OSGridSquares[key].Northing;
+		   
+		   EastingMetres = OSGridSquares[key].EastingMetres;
+		   NorthingMetres = OSGridSquares[key].NorthingMetres;
+		   
+		   GridRefEast =  (parseInt(easting) - EastingMetres).toString();
+		   GridRefNorthing =  (parseInt(northing) - NorthingMetres).toString();		   
+		   GridSquare = key + GridRefEast + GridRefNorthing;
 		   break;
 		}
 	}
+	
+	return(GridSquare)
 }
+
+
+function GetGridSquareDetails(GridSquare)
+{
+   return OSGridSquares[GridSquare]
+}
+
+
