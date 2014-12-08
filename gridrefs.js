@@ -460,8 +460,8 @@ function EastingNorthingToGridRef(easting,northing)
 		   EastingMetres = OSGridSquares[key].EastingMetres;
 		   NorthingMetres = OSGridSquares[key].NorthingMetres;
 		   
-		   GridRefEast =  (parseInt(easting) - EastingMetres).toString();
-		   GridRefNorthing =  (parseInt(northing) - NorthingMetres).toString();		   
+		   GridRefEast =  easting.substring(1)
+		   GridRefNorthing =  northing.substring(1);		   
 		   GridSquare = key + GridRefEast + GridRefNorthing;
 		   break;
 		}
