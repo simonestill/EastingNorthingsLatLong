@@ -1,18 +1,49 @@
 <!DOCTYPE html>
-<html>
-     <head>
-          <title>LatLong Demo</title>
-     </head>
-     <body>
-        <header>
-        <h1>LatLong Demo</h1>
-        </header>
-        <nav>
-        </nav>
-        <content>
-        
-        </content>
-        <footer>
-        </footer>
-     </body>
+<html lang="en-GB">
+	<head>
+		<title>Grid Square Test</title>
+		<script type="text/javascript" src="GridSquares.js"></script>
+		<script type="text/javascript" src="latlong.js"></script>
+	</head>
+	<body>
+		<p><input type="text" value="" size="20" id="GridRef" />
+		   <button onclick="NorthingEasting();return false;" text="Calculate Norhting and Easting">
+		   
+		   Calculate Norhting and Easting
+		   </button>
+		</p>
+		<h2 id="demo">dadsfsd</h2>
+	<script>
+	     var x = document.getElementById("demo");
+	     getLocation();
+		 
+	    function NorthingEasting(gridref)
+		{
+		    gridref = document.getElementById("GridRef").value;
+			alert(gridref);
+			var ne = GridRefToEastingNorthing(gridref);
+		    alert(ne);
+			gr = EastingNorthingToGridRef(ne[0],ne[1]);
+			alert(gr)
+		}
+	
+	
+		function getLocation() {			
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showPosition);
+			} else {
+				x.innerHTML = "Geolocation is not supported by this browser.";
+			}
+		}
+		function showPosition(position) {
+			x.innerHTML = "Latitude: " + position.coords.latitude + 
+			"<br>Longitude: " + position.coords.longitude; 
+			EastingNorthing = LatLongToNorthEast(position.coords.latitude, position.coords.longitude)
+			x.innerHTML  += "<br>Easting : " + EastingNorthing.Easting + "<br>" + "Northing: " + EastingNorthing.Northing;
+			LatLong = NorthEastToLatLong(EastingNorthing.Easting,EastingNorthing.Northing);
+			x.innerHTML += "<br>Latitude: " + LatLong.Latitude + "<br>Longitude: " + LatLong.Longitude;
+			x.innerHTML += "<br>Grid Reference: " + EastingNorthingToGridRef(EastingNorthing.Easting,EastingNorthing.Northing);
+		}
+	</script>
+	</body>
 </html>
