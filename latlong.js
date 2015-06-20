@@ -1,7 +1,7 @@
 //@Author: Simon Estill
 //@Created:2013-03-21
 //Simple procedural library for converting (Easting,Northing) to (Latitude,Longitude) and visa versa)
-
+// Demo
 function NorthEastToLatLong(Easting, Northing)
 {
             //Fiddle Factors
